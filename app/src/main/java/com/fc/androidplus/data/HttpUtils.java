@@ -26,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @Copyright: 2018  Inc. All rights reserved.
  */
 public class HttpUtils {
-    private DataApi dataApi;
+    private WordsApi dataApi;
     private static HttpUtils httpUtils;
 
 
@@ -37,13 +37,16 @@ public class HttpUtils {
                 .readTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS);
         builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
-        Retrofit retrofit = new Retrofit.Builder().baseUrl("http://dict.youdao.com/")
+        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl("http://www.wanandroid.com/article/")
+
+                .baseUrl("http://dict.youdao.com/")
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        dataApi = retrofit.create(DataApi.class);
+        dataApi = retrofit.create(WordsApi.class);
 
 
     }

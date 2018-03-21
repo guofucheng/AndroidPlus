@@ -18,7 +18,7 @@ import retrofit2.http.POST;
  * @date: 2018/3/21 0021  9:11
  * @Copyright: 2018  Inc. All rights reserved.
  */
-public interface DataApi {
+public interface WordsApi {
     @POST("suggest?le=eng&doctype=json")
     @FormUrlEncoded
     Observable<WordsResultBean> suggest(@Field("q") String q);
