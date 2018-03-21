@@ -1,6 +1,7 @@
 package com.fc.androidplus.data;
 
 
+import com.fc.androidplus.bean.ParaphraseResultBean;
 import com.fc.androidplus.bean.WordsResultBean;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -52,21 +53,22 @@ public class HttpUtils {
             synchronized (HttpUtils.class) {
                 if (httpUtils == null) {
                     httpUtils = new HttpUtils();
-
                 }
-
-
             }
-
-
         }
         return httpUtils;
     }
 
+    public void shiyi(String word, Observer<ParaphraseResultBean> observer) {
+        dataApi.translate(word)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
 
+    }
 
-    public void findWord(String word, Observer<WordsResultBean> observer) {
-        dataApi.findWord(word)
+    public void suggestWord(String word, Observer<WordsResultBean> observer) {
+        dataApi.suggest(word)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);

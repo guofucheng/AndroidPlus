@@ -3,13 +3,13 @@ package com.fc.androidplus.words;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fc.androidplus.R;
-import com.fc.androidplus.data.HttpUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,6 +26,8 @@ public class WordsActivity extends AppCompatActivity implements WordsContract.Vi
     TextView tvResult;
 
     WordsContract.Presenter mPresenter;
+    @BindView(R.id.btn_shiyi)
+    Button btnShiyi;
     private ProgressDialog progressDialog;
 
     @Override
@@ -71,11 +73,17 @@ public class WordsActivity extends AppCompatActivity implements WordsContract.Vi
         Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.btn_search)
-    public void onViewClicked() {
 
-        mPresenter.searchWord(etWord.getText().toString());
+    @OnClick({R.id.btn_search, R.id.btn_shiyi})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_search:
+                mPresenter.searchWord(etWord.getText().toString());
+                break;
+            case R.id.btn_shiyi:
 
-
+                mPresenter.shiyi(etWord.getText().toString());
+                break;
+        }
     }
 }

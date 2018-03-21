@@ -1,5 +1,6 @@
 package com.fc.androidplus.words;
 
+import com.fc.androidplus.bean.ParaphraseResultBean;
 import com.fc.androidplus.bean.WordsResultBean;
 import com.fc.androidplus.data.HttpUtils;
 
@@ -45,7 +46,7 @@ public class WordsPresenter implements WordsContract.Presenter {
         }
         view.showProgressDialog();
 
-        HttpUtils.getInstance().findWord(word, new Observer<WordsResultBean>() {
+        HttpUtils.getInstance().suggestWord(word, new Observer<WordsResultBean>() {
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -80,5 +81,40 @@ public class WordsPresenter implements WordsContract.Presenter {
         });
 
 
+    }
+
+    @Override
+    public void shiyi(String word) {
+        if (null == word) {
+            view.errPromopt("搜索词为null");
+            return;
+        }
+        if ("".equals(word)) {
+            view.errPromopt("搜索词为\"\"");
+            return;
+        }
+        view.showProgressDialog();
+        HttpUtils.getInstance().shiyi(word, new Observer<ParaphraseResultBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(ParaphraseResultBean paraphraseResultBean) {
+                view.showResult(paraphraseResultBean.getUgc().getData().getContent());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                view.showResult(e.getMessage());
+                view.dismissProgressDialog();
+            }
+
+            @Override
+            public void onComplete() {
+                view.dismissProgressDialog();
+            }
+        });
     }
 }

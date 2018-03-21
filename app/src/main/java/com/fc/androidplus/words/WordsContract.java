@@ -28,7 +28,7 @@ public interface WordsContract {
 
     interface Presenter extends BasePresenter {
         void searchWord(String word);
-
+        void shiyi(String word);
 
     }
 

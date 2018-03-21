@@ -1,5 +1,6 @@
 package com.fc.androidplus.data;
 
+import com.fc.androidplus.bean.ParaphraseResultBean;
 import com.fc.androidplus.bean.WordsResultBean;
 
 import io.reactivex.Observable;
@@ -20,5 +21,13 @@ import retrofit2.http.POST;
 public interface DataApi {
     @POST("suggest?le=eng&doctype=json")
     @FormUrlEncoded
-    Observable<WordsResultBean> findWord(@Field("q") String q);
+    Observable<WordsResultBean> suggest(@Field("q") String q);
+
+
+
+
+
+    @POST("jsonapi?xmlVersion=5.1&network=5g&jsonversion=2")
+    @FormUrlEncoded
+    Observable<ParaphraseResultBean> translate(@Field("q") String q);
 }
