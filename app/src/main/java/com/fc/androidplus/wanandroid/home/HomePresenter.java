@@ -71,6 +71,7 @@ public class HomePresenter implements HomeContract.Presenter {
             @Override
             public void onNext(BannerJsonBean bannerJsonBean) {
                 List<BannerJsonBean.DataBean> data = bannerJsonBean.getData();
+                view.setBanner(data);
             }
 
             @Override

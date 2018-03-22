@@ -83,10 +83,11 @@ public class HomeFragment extends Fragment implements HomeContract.View{
 
     @Override
     public void setBanner(List<BannerJsonBean.DataBean> dataBeans) {
+
         List<String> url=new ArrayList<>();
-        url.add("http://img4.imgtn.bdimg.com/it/u=1665207864,746409922&fm=27&gp=0.jpg");
-        url.add("http://img4.imgtn.bdimg.com/it/u=1665207864,746409922&fm=27&gp=0.jpg");
-        url.add("http://pic29.nipic.com/20130514/12477194_083818249176_2.jpg");
+        for (BannerJsonBean.DataBean db: dataBeans) {
+            url.add(db.getImagePath());
+        }
         banner.setImages(url).start();
     }
 

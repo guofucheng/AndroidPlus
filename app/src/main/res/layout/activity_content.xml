@@ -16,10 +16,12 @@
         android:id="@+id/ll_bottom"
         android:layout_alignParentBottom="true"
         android:background="#ffffff"
+        android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/ll_home"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -27,6 +29,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_margin="2dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@mipmap/ic_launcher" />
@@ -38,6 +41,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_category"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -45,6 +49,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_margin="2dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@mipmap/ic_launcher" />
@@ -56,6 +61,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_personal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -63,6 +69,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_margin="2dp"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@mipmap/ic_launcher" />
