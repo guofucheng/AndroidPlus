@@ -46,75 +46,75 @@ public class WordsPresenter implements WordsContract.Presenter {
         }
         view.showProgressDialog();
 
-        HttpUtils.getInstance().suggestWord(word, new Observer<WordsResultBean>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(WordsResultBean jsonRootBean) {
-
-                List<WordsResultBean.DataBean.EntriesBean> entries = jsonRootBean.getData().getEntries();
-                if (null != entries && entries.size() > 0) {
-
-
-                    StringBuffer sb = new StringBuffer();
-                    for (int i = 0; i < entries.size(); i++) {
-                        sb.append(entries.get(i).getExplain() + "\n");
-                    }
-                    view.showResult(sb.toString());
-                } else {
-                    view.showResult("没有该单词");
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                view.showResult(e.getMessage());
-            }
-
-            @Override
-            public void onComplete() {
-                view.dismissProgressDialog();
-            }
-        });
+//        HttpUtils.getInstance().suggestWord(word, new Observer<WordsResultBean>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(WordsResultBean jsonRootBean) {
+//
+//                List<WordsResultBean.DataBean.EntriesBean> entries = jsonRootBean.getData().getEntries();
+//                if (null != entries && entries.size() > 0) {
+//
+//
+//                    StringBuffer sb = new StringBuffer();
+//                    for (int i = 0; i < entries.size(); i++) {
+//                        sb.append(entries.get(i).getExplain() + "\n");
+//                    }
+//                    view.showResult(sb.toString());
+//                } else {
+//                    view.showResult("没有该单词");
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                view.showResult(e.getMessage());
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                view.dismissProgressDialog();
+//            }
+//        });
 
 
     }
 
     @Override
     public void shiyi(String word) {
-        if (null == word) {
-            view.errPromopt("搜索词为null");
-            return;
-        }
-        if ("".equals(word)) {
-            view.errPromopt("搜索词为\"\"");
-            return;
-        }
-        view.showProgressDialog();
-        HttpUtils.getInstance().shiyi(word, new Observer<ParaphraseResultBean>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(ParaphraseResultBean paraphraseResultBean) {
-                view.showResult(paraphraseResultBean.getUgc().getData().getContent());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                view.showResult(e.getMessage());
-                view.dismissProgressDialog();
-            }
-
-            @Override
-            public void onComplete() {
-                view.dismissProgressDialog();
-            }
-        });
+//        if (null == word) {
+//            view.errPromopt("搜索词为null");
+//            return;
+//        }
+//        if ("".equals(word)) {
+//            view.errPromopt("搜索词为\"\"");
+//            return;
+//        }
+//        view.showProgressDialog();
+//        HttpUtils.getInstance().shiyi(word, new Observer<ParaphraseResultBean>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(ParaphraseResultBean paraphraseResultBean) {
+//                view.showResult(paraphraseResultBean.getUgc().getData().getContent());
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                view.showResult(e.getMessage());
+//                view.dismissProgressDialog();
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//                view.dismissProgressDialog();
+//            }
+//        });
     }
 }

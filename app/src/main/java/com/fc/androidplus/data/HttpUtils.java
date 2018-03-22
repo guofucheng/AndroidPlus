@@ -1,6 +1,8 @@
 package com.fc.androidplus.data;
 
 
+import com.fc.androidplus.bean.BannerJsonBean;
+import com.fc.androidplus.bean.NewsJsonBean;
 import com.fc.androidplus.bean.ParaphraseResultBean;
 import com.fc.androidplus.bean.WordsResultBean;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -26,7 +28,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @Copyright: 2018  Inc. All rights reserved.
  */
 public class HttpUtils {
-    private WordsApi dataApi;
+    //    private WordsApi dataApi;
+    private WanandroidApi wanandroidApi;
     private static HttpUtils httpUtils;
 
 
@@ -38,15 +41,15 @@ public class HttpUtils {
                 .writeTimeout(10, TimeUnit.SECONDS);
         builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
         Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://www.wanandroid.com/article/")
+                .baseUrl("http://www.wanandroid.com/")
 
-                .baseUrl("http://dict.youdao.com/")
+//                .baseUrl("http://dict.youdao.com/")
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-
-        dataApi = retrofit.create(WordsApi.class);
+        wanandroidApi = retrofit.create(WanandroidApi.class);
+//        dataApi = retrofit.create(WordsApi.class);
 
 
     }
@@ -62,19 +65,35 @@ public class HttpUtils {
         return httpUtils;
     }
 
-    public void shiyi(String word, Observer<ParaphraseResultBean> observer) {
-        dataApi.translate(word)
+    public void getArticleList(int page, Observer<NewsJsonBean> observer) {
+        wanandroidApi.getArticleList(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
-    }
 
-    public void suggestWord(String word, Observer<WordsResultBean> observer) {
-        dataApi.suggest(word)
+    }
+    public void getBanner(Observer<BannerJsonBean> observer) {
+        wanandroidApi.getBanner()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
+
     }
+//    public void shiyi(String word, Observer<ParaphraseResultBean> observer) {
+//        dataApi.translate(word)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(observer);
+//
+//    }
+//
+//    public void suggestWord(String word, Observer<WordsResultBean> observer) {
+//        dataApi.suggest(word)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(observer);
+//
+//    }
 }

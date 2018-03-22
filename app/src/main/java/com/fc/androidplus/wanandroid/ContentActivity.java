@@ -8,7 +8,7 @@ import android.os.Bundle;
 import com.fc.androidplus.R;
 import com.fc.androidplus.wanandroid.home.HomeFragment;
 
-public class ContentActivity extends AppCompatActivity implements HomeFragment.OnFragmentInteractionListener{
+public class ContentActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,11 +16,7 @@ public class ContentActivity extends AppCompatActivity implements HomeFragment.O
         setContentView(R.layout.activity_content);
 
          FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance("","")).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance()).commit();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }

@@ -1,109 +1,113 @@
 package com.fc.androidplus.wanandroid.home;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.fc.androidplus.R;
+import com.fc.androidplus.adapter.NewsAdapter;
+import com.fc.androidplus.bean.BannerJsonBean;
+import com.fc.androidplus.bean.NewsJsonBean;
+import com.fc.androidplus.utils.GlideImageloader;
+import com.tapadoo.alerter.Alerter;
+import com.youth.banner.Banner;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link HomeFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
-
+public class HomeFragment extends Fragment implements HomeContract.View{
+    HomeContract.Presenter mPresenter;
+    RecyclerView rv_list;
+    NewsAdapter adapter;
+    Banner banner;
     public HomeFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+
+    public static HomeFragment newInstance() {
+
+        return new HomeFragment();
     }
+
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        mPresenter=new HomePresenter(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
-    }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        banner= view.findViewById(R.id.banner);
+        banner.setImageLoader(new GlideImageloader());
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+        rv_list = view.findViewById(R.id.rv_list);
+        rv_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter=new NewsAdapter(R.layout.artical_items,null);
+        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        adapter.isFirstOnly(false);
+        rv_list.setAdapter(adapter);
+        progressDialog=new ProgressDialog(getActivity());
+        progressDialog.setTitle("提示");
+        progressDialog.setMessage("正在加载..");
+        progressDialog.setCanceledOnTouchOutside(false);
+        return view;
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public void onResume() {
+        super.onResume();
+        mPresenter.getBanner();
+        mPresenter.getArticleList(0);
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void setPresenter(HomeContract.Presenter presenter) {
+        mPresenter=presenter;
+    }
+
+    @Override
+    public void setBanner(List<BannerJsonBean.DataBean> dataBeans) {
+        List<String> url=new ArrayList<>();
+        url.add("http://img4.imgtn.bdimg.com/it/u=1665207864,746409922&fm=27&gp=0.jpg");
+        url.add("http://img4.imgtn.bdimg.com/it/u=1665207864,746409922&fm=27&gp=0.jpg");
+        url.add("http://pic29.nipic.com/20130514/12477194_083818249176_2.jpg");
+        banner.setImages(url).start();
+    }
+
+    @Override
+    public void showErrinfo(String err) {
+        Alerter.create(getActivity()).setTitle("提示").setText(err).setIcon(R.drawable.alerter_ic_notifications).setDuration(2000).show();
+    }
+
+    @Override
+    public void flushNews(NewsJsonBean data) {
+        adapter.setNewData(data.getData().getDatas());
+    }
+
+    ProgressDialog progressDialog;
+    @Override
+    public void showProgressDialog() {
+        progressDialog.show();
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+        progressDialog.dismiss();
     }
 }
